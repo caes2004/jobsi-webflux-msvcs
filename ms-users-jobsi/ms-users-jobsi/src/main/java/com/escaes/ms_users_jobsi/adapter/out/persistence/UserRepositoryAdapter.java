@@ -45,8 +45,8 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
 
     @Override
     public Flux<User> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return r2dbcUserRepository.findAll()
+                .map(UserMapper :: EntityToDomain);
     }
 
     @Override
@@ -100,6 +100,12 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     public Flux<User> findAllByGender(String gender) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAllByGender'");
+    }
+
+    @Override
+    public Mono<Integer> countUsers() {
+      return r2dbcUserRepository.count()
+              .map(Long::intValue);
     }
 
 }

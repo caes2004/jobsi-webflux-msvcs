@@ -3,6 +3,7 @@ package com.escaes.ms_users_jobsi.domain.port.in;
 import com.escaes.ms_users_jobsi.application.dto.UserDto;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface ListUsersUseCase {
 
@@ -13,5 +14,7 @@ public interface ListUsersUseCase {
     Flux<UserDto> listByIsActive(boolean isActive);
 
     Flux<UserDto> listByGender(String gender);
+
+    Mono<Integer> countUsers();
 
 }

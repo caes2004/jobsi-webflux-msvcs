@@ -45,8 +45,18 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
 
     @Override
     public Flux<UserDto> listAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listAll'");
+        return userRepository.findAll()
+                .map(user-> UserDto.builder()
+                        .id(user.getId())
+                        .name(user.getName())
+                        .lastName(user.getLastName())
+                        .documentNumber(user.getDocumentNumber())
+                        .email(user.getEmail())
+                        .phoneNumber(user.getPhoneNumber())
+                        .isActive(user.isActive())
+                        .role(user.getRole() != null ? user.getRole() : null)
+                        .gender(user.getGender() != null ? user.getGender() : null)
+                        .build());
     }
 
     @Override
@@ -93,6 +103,12 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
     public Mono<UserDto> getByDocumentNumber(String documentNumber) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getByDocumentNumber'");
+    }
+
+    @Override
+    public Mono<Integer> countUsers() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'countUsers'");
     }
 
 }
