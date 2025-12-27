@@ -9,9 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import com.escaes.ms_users_jobsi.application.dto.RegisterUserCommand;
 import com.escaes.ms_users_jobsi.application.service.CrudUserService;
 import com.escaes.ms_users_jobsi.application.service.RegisterUserService;
+import org.springframework.context.annotation.Profile;
 
 
 @Configuration
+@Profile("dev")
 public class DataInitializer {
 
     private final Logger logger = Logger.getLogger(DataInitializer.class.getName());

@@ -107,8 +107,7 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
 
     @Override
     public Mono<Integer> countUsers() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'countUsers'");
+        return userRepository.countUsers();
     }
 
 }

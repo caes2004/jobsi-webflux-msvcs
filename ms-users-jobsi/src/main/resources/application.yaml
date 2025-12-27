@@ -1,3 +1,6 @@
 spring:
   application:
     name: ms-users-jobsi
+
+  profiles:
+    active: test

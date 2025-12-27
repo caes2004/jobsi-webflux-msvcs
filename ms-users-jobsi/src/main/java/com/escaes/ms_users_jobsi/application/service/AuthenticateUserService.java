@@ -17,7 +17,7 @@ public class AuthenticateUserService implements AuthenticateUserUseCase{
 
     private final UserRepositoryPort userRepository;
     private final JWTutil jwtutil;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public Mono<AuthResponse> authenticate(LoginCommand command) {

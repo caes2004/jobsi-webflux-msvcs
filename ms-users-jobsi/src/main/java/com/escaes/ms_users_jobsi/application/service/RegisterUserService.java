@@ -36,7 +36,7 @@ public class RegisterUserService implements RegisterUserUseCase {
                      .build();
 
                 return userRepository.save(newUser)
-                        .map(user -> user.getId());
+                        .map(User::getId);
 
              });
     }
