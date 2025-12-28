@@ -9,6 +9,8 @@ import reactor.core.publisher.Mono;
 
 public interface UserRepositoryPort extends ReactiveCrudPort<User, UUID> {
 
+    Mono<User>create(User entity);
+
     Mono<Boolean> existsByEmail(String email);
     Mono<Boolean> existsByDocumentNumber(String documentNumber);
 

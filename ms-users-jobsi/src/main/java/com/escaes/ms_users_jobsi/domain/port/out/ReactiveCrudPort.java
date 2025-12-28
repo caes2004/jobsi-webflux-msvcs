@@ -5,7 +5,7 @@ import reactor.core.publisher.Mono;
 
 public interface ReactiveCrudPort<T, ID> {
 
-    Mono<T> save(T entity);
+    Mono<T> update(T entity);
 
     Mono<T> findById(ID id);
 

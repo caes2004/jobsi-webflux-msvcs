@@ -10,9 +10,9 @@ public class LoginCommand {
     
     @Email
     @NotBlank
-    private String email;
+    String email;
     
     @NotBlank
-    private String password;
+    String password;
 
 }

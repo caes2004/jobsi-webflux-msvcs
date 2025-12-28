@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.escaes.ms_users_jobsi.application.dto.UpdateUserCommand;
 import com.escaes.ms_users_jobsi.application.dto.UserDto;
+import com.escaes.ms_users_jobsi.application.mapper.UserMapper;
 import com.escaes.ms_users_jobsi.domain.port.in.DeleteUserUseCase;
 import com.escaes.ms_users_jobsi.domain.port.in.GetUserUseCase;
 import com.escaes.ms_users_jobsi.domain.port.in.ListUsersUseCase;
@@ -46,17 +47,7 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
     @Override
     public Flux<UserDto> listAll() {
         return userRepository.findAll()
-                .map(user-> UserDto.builder()
-                        .id(user.getId())
-                        .name(user.getName())
-                        .lastName(user.getLastName())
-                        .documentNumber(user.getDocumentNumber())
-                        .email(user.getEmail())
-                        .phoneNumber(user.getPhoneNumber())
-                        .isActive(user.isActive())
-                        .role(user.getRole() != null ? user.getRole() : null)
-                        .gender(user.getGender() != null ? user.getGender() : null)
-                        .build());
+                .map(UserMapper::toDto);
     }
 
     @Override
@@ -86,17 +77,7 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
     @Override
     public Mono<UserDto> getByEmail(String email) {
         return userRepository.findByEmail(email)
-                .map(user-> UserDto.builder()
-                        .id(user.getId())
-                        .name(user.getName())
-                        .lastName(user.getLastName())
-                        .documentNumber(user.getDocumentNumber())
-                        .email(user.getEmail())
-                        .phoneNumber(user.getPhoneNumber())
-                        .isActive(user.isActive())
-                        .role(user.getRole() != null ? user.getRole() : null)
-                        .gender(user.getGender() != null ? user.getGender() : null)
-                        .build());
+                .map(UserMapper::toDto);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class UserEntity {
 
     
     @Id
-    private UUID id;
+    private String id;
 
     @Column("document_number")
     private String documentNumber;
@@ -58,9 +58,5 @@ public class UserEntity {
 
     @Column("gender")
     private String gender;
-
-    public void setPassword(String password) {
-        this.password = new BCryptPasswordEncoder().encode(password);
-    }
 
 }

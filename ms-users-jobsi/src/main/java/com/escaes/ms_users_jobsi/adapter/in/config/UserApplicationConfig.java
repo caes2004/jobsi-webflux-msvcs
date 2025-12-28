@@ -8,21 +8,22 @@ import com.escaes.ms_users_jobsi.domain.port.out.UserRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Application layer configuration.
- *
+ * <p>
  * This configuration class is responsible for wiring application use cases
  * with their required dependencies.
- *
+ * <p>
  * Why is this done here and not in the service itself?
  * - The application layer must remain framework-agnostic.
  * - Annotating services with @Service would introduce a dependency on Spring.
  * - In Clean Architecture, object creation is delegated to the outer layers.
- *
+ * <p>
  * This class belongs to the adapter/config layer, which is allowed to depend
  * on Spring and acts as the composition root of the application.
- *
+ * <p>
  * As a result:
  * - The application layer stays clean and testable.
  * - Spring is only used at the boundaries.
@@ -46,9 +47,10 @@ public class UserApplicationConfig {
     }
     @Bean
     public RegisterUserService registerUserService(
-            UserRepositoryPort userRepositoryPort
+            UserRepositoryPort userRepositoryPort,
+            PasswordEncoder passwordEncoder
     ){
-        return new RegisterUserService(userRepositoryPort);
+        return new RegisterUserService(userRepositoryPort, passwordEncoder);
     }
 
 }

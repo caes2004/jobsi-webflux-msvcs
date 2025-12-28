@@ -2,6 +2,8 @@ package com.escaes.ms_users_jobsi.adapter.out.persistence;
 
 import java.util.UUID;
 
+import com.escaes.ms_users_jobsi.adapter.out.persistence.entity.UserEntity;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.escaes.ms_users_jobsi.adapter.out.persistence.repository.R2dbcUserRepository;
@@ -18,11 +20,20 @@ import reactor.core.publisher.Mono;
 public class UserRepositoryAdapter implements UserRepositoryPort {
 
     private final R2dbcUserRepository r2dbcUserRepository;
+    private final R2dbcEntityTemplate template;
 
     @Override
-    public Mono<User> save(User entity) {
+    public Mono<User> create(User entity) {
+        UserEntity userEntity = UserMapper.toEntity(entity);
+
+        return template.insert(UserEntity.class).using(userEntity)
+                .map(UserMapper::EntityToDomain);
+    }
+
+    @Override
+    public Mono<User> update(User entity) {
         return r2dbcUserRepository.save(UserMapper.toEntity(entity))
-                .map(UserMapper :: EntityToDomain);   
+                .map(UserMapper::EntityToDomain);
     }
 
     @Override
@@ -46,7 +57,7 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     @Override
     public Flux<User> findAll() {
         return r2dbcUserRepository.findAll()
-                .map(UserMapper :: EntityToDomain);
+                .map(UserMapper::EntityToDomain);
     }
 
     @Override
@@ -63,7 +74,7 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     @Override
     public Mono<User> findByEmail(String email) {
         return r2dbcUserRepository.findByEmail(email)
-                .map(UserMapper :: EntityToDomain);
+                .map(UserMapper::EntityToDomain);
     }
 
     @Override
@@ -104,8 +115,8 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
 
     @Override
     public Mono<Integer> countUsers() {
-      return r2dbcUserRepository.count()
-              .map(Long::intValue);
+        return r2dbcUserRepository.count()
+                .map(Long::intValue);
     }
 
 }

@@ -3,4 +3,4 @@ spring:
     name: ms-users-jobsi
 
   profiles:
-    active: test
+    active: dev

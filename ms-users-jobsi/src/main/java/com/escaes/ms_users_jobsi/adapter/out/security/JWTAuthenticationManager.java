@@ -1,8 +1,11 @@
 package com.escaes.ms_users_jobsi.adapter.out.security;
 
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -29,20 +32,23 @@ public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
        String username= jwtUtil.extractUsername(token);
 
        return userService.getByEmail(username)
-            .map(userDetails -> {
-                if (jwtUtil.validateToken(token, userDetails.getEmail())) {
-                    // Extract role from token and build authorities
-                    String role = jwtUtil.extractRole(token);
-                    List<org.springframework.security.core.GrantedAuthority> authorities = java.util.Collections.emptyList();
-                    if (role != null) {
-                        authorities = List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role));
-                    }
-                    return new UsernamePasswordAuthenticationToken(
-                            userDetails.getEmail(), token, authorities);
-                } else {
-                    throw new AuthenticationException("Invalid Token"){};
-                }
-            });
+               .handle((userDetails, sink) -> {
+                   if (jwtUtil.validateToken(token, userDetails.getEmail())) {
+                       // Extract role from token and build authorities
+                       String role = jwtUtil.extractRole(token);
+                       List<GrantedAuthority> authorities = Collections.emptyList();
+                       if (role != null) {
+                           authorities = Collections.singletonList(
+                                   new SimpleGrantedAuthority("ROLE_" + role)
+                           );
+                       }
+                       sink.next(new UsernamePasswordAuthenticationToken(
+                               userDetails.getEmail(), token, authorities));
+                   } else {
+                       sink.error(new AuthenticationException("Invalid Token") {
+                       });
+                   }
+               });
     }
     
     public ServerAuthenticationConverter authenticationConverter() {

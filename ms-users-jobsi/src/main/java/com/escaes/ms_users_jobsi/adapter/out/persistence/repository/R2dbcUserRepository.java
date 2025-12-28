@@ -8,7 +8,7 @@ import com.escaes.ms_users_jobsi.adapter.out.persistence.entity.UserEntity;
 
 import reactor.core.publisher.Mono;
 
-public interface R2dbcUserRepository extends ReactiveCrudRepository<UserEntity, UUID> {
+public interface R2dbcUserRepository extends ReactiveCrudRepository<UserEntity, String> {
 
     Mono<Boolean> existsByEmail(String email);
 
