@@ -1,5 +1,6 @@
 package com.escaes.ms_users_jobsi.application.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -20,7 +21,7 @@ public class UserDto {
     String lastName;
     String email;
     String phoneNumber;
-    Date birthDate;
+    LocalDate birthDate;
     boolean isActive;
     Role role;
     Gender gender;

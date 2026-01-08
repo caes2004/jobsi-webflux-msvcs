@@ -1,6 +1,7 @@
 package com.escaes.ms_users_jobsi.domain.model;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class User {
     private String email;
     private String password;
     private String phoneNumber;
-    private Date birthDate;
+    private LocalDate birthDate;
     private boolean isActive;
     private Role role;
     private Gender gender;

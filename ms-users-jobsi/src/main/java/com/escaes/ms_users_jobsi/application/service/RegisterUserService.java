@@ -1,5 +1,7 @@
 package com.escaes.ms_users_jobsi.application.service;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.UUID;
 
 import com.escaes.ms_users_jobsi.application.dto.RegisterUserCommand;
@@ -33,12 +35,15 @@ public class RegisterUserService implements RegisterUserUseCase {
                             .id(UUID.randomUUID())
                             .email(command.getEmail())
                             .password(encodedPassword)
+                            .name(command.getName())
                             .firstName(command.getFirstName())
                             .lastName(command.getLastName())
                             .documentNumber(command.getDocumentNumber())
                             .phoneNumber(command.getPhoneNumber())
+                            .birthDate(command.getBirthDate())
                             .role(Role.USER)
                             .gender(command.getGender() != null ? command.getGender() : Gender.OTHER)
+                            .isActive(Boolean.TRUE)
                             .build();
 
                     return userRepository.create(newUser)

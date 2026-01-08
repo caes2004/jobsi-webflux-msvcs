@@ -53,7 +53,7 @@ public final class UserMapper {
 
     public static User toDomain(RegisterUserCommand cmd) {
         UUID id = UUID.randomUUID();
-        Date birth = toDate(cmd.getBirthDate());
+
         return new User(
                 id,
                 cmd.getDocumentNumber(),
@@ -63,7 +63,7 @@ public final class UserMapper {
                 cmd.getEmail(),
                 cmd.getPassword(),
                 cmd.getPhoneNumber(),
-                birth,
+                cmd.getBirthDate(),
                 true,
                 Role.USER,
                 cmd.getGender()
@@ -72,7 +72,7 @@ public final class UserMapper {
 
     public static User EntityToDomain(UserEntity entity) {
         if (entity == null) return null;
-        Date birth = toDate(entity.getBirthDate() != null ? LocalDate.parse(entity.getBirthDate()) : null);
+        LocalDate birth = (entity.getBirthDate() != null ? LocalDate.parse(entity.getBirthDate()) : null);
         return User.builder(
                 ).id(UUID.fromString(entity.getId()))
                 .documentNumber(entity.getDocumentNumber())
@@ -91,7 +91,7 @@ public final class UserMapper {
 
     public static UserDto toDto(User user) {
         if (user == null) return null;
-        Date birth = user.getBirthDate();
+        LocalDate birth = user.getBirthDate();
         return UserDto.builder()
                 .id(user.getId())
                 .documentNumber(user.getDocumentNumber())
@@ -113,7 +113,7 @@ public final class UserMapper {
         String firstName = cmd.getFirstName() != null ? cmd.getFirstName() : existing.getFirstName();
         String lastName = cmd.getLastName() != null ? cmd.getLastName() : existing.getLastName();
         String phone = cmd.getPhoneNumber() != null ? cmd.getPhoneNumber() : existing.getPhoneNumber();
-        Date birth = cmd.getBirthDate() != null ? toDate(cmd.getBirthDate()) : existing.getBirthDate();
+        LocalDate birth = cmd.getBirthDate() != null ? (cmd.getBirthDate()) : existing.getBirthDate();
         boolean active = cmd.getIsActive() != null ? cmd.getIsActive() : existing.isActive();
         Role role = cmd.getRole() != null ? cmd.getRole() : existing.getRole();
         Gender gender = cmd.getGender() != null ? cmd.getGender() : existing.getGender();
