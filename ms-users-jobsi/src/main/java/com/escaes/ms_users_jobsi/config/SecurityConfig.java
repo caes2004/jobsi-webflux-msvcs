@@ -2,6 +2,7 @@ package com.escaes.ms_users_jobsi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -30,8 +31,14 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(ServerHttpSecurity.HeaderSpec.FrameOptionsSpec::disable))
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/auth/**", "/actuator/**", "/health","/v3/api-docs/**","/swagger-ui/**").permitAll()
-                        .pathMatchers("/admin/**").hasRole("ADMIN")
-                        .pathMatchers("/users/**").hasAnyRole("USER", "ADMIN")
+
+                        // Only ADMIN
+                        .pathMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
+
+                        // USER and ADMIN
+                        .pathMatchers("/users/me/**").hasAnyRole("USER", "ADMIN")
+
                         .anyExchange().authenticated())
                 .addFilterAt(authFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .build();

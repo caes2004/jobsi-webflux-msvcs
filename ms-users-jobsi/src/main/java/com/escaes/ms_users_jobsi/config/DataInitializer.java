@@ -40,7 +40,7 @@ public class DataInitializer {
                                             .lastName("peggy")
                                             .email("john.doe@example.com")
                                             .birthDate(LocalDate.of(2004,2,7))
-                                            .password("123")
+                                            .password("A1234567")
                                             .phoneNumber("+1234567890")
                                             .build()
                             ),
@@ -52,7 +52,7 @@ public class DataInitializer {
                                             .lastName("Smith")
                                             .email("jane.smith@example.com")
                                             .birthDate(LocalDate.of(2004,2,7))
-                                            .password("123")
+                                            .password("B1234567")
                                             .phoneNumber("+0987654321")
                                             .build()
                             )
