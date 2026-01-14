@@ -11,9 +11,11 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
 @Value
 @Builder
+@Jacksonized
 public class RegisterUserCommand {
 
     @NotBlank

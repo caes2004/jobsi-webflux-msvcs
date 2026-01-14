@@ -1,5 +1,6 @@
 package com.escaes.ms_users_jobsi.adapter.out.persistence.entity;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -48,7 +49,7 @@ public class UserEntity {
     private String phoneNumber;
 
     @Column("birth_date") 
-    private String birthDate;
+    private LocalDate birthDate;
 
     @Column("is_active")
     private boolean isActive;

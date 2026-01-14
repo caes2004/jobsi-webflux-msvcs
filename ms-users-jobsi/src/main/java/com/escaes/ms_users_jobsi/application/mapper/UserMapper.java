@@ -72,7 +72,7 @@ public final class UserMapper {
 
     public static User EntityToDomain(UserEntity entity) {
         if (entity == null) return null;
-        LocalDate birth = (entity.getBirthDate() != null ? LocalDate.parse(entity.getBirthDate()) : null);
+
         return User.builder(
                 ).id(UUID.fromString(entity.getId()))
                 .documentNumber(entity.getDocumentNumber())
@@ -82,7 +82,7 @@ public final class UserMapper {
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .phoneNumber(entity.getPhoneNumber())
-                .birthDate(birth)
+                .birthDate(entity.getBirthDate())
                 .isActive(entity.isActive())
                 .role(entity.getRole() != null ? Role.valueOf(entity.getRole()) : null)
                 .build();
@@ -150,7 +150,7 @@ public final class UserMapper {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
-                .birthDate(user.getBirthDate() != null ? user.getBirthDate().toString() : null)
+                .birthDate(user.getBirthDate() != null ? user.getBirthDate() : null)
                 .isActive(user.isActive())
                 .role(user.getRole() != null ? user.getRole().name() : null)
                 .gender(user.getGender() != null ? user.getGender().name() : Gender.OTHER.toString())

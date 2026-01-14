@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .headers(headers -> headers.frameOptions(ServerHttpSecurity.HeaderSpec.FrameOptionsSpec::disable))
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/auth/**", "/actuator/**", "/health").permitAll()
+                        .pathMatchers("/auth/**", "/actuator/**", "/health","/v3/api-docs/**","/swagger-ui.html").permitAll()
                         .pathMatchers("/admin/**").hasRole("ADMIN")
                         .pathMatchers("/users/**").hasAnyRole("USER", "ADMIN")
                         .anyExchange().authenticated())
