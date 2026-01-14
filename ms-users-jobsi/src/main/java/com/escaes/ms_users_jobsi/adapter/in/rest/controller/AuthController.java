@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-@Tag(name="Authentication", description="Related operations with authentication")
+@Tag(name = "Authentication", description = "Related operations with authentication")
 public class AuthController {
 
     private final AuthenticateUserService authenticateUserService;
@@ -28,9 +28,6 @@ public class AuthController {
     public Mono<AuthResponse> authenticate(@Valid @RequestBody LoginCommand command) {
         LOGGER.info("Received login command with email= {}", command.getEmail());
 
-        Mono<AuthResponse> response= authenticateUserService.authenticate(command);
-
-        LOGGER.info("Auth response successful from authenticateUserService: {}", response);
-        return response;
+        return authenticateUserService.authenticate(command).log("AUTH_FLOW");
     }
 }
