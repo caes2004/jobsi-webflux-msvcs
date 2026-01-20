@@ -1,5 +1,7 @@
 package com.escaes.ms_users_jobsi.adapter.out.persistence;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.escaes.ms_users_jobsi.adapter.out.persistence.entity.UserEntity;
@@ -164,6 +166,32 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
                 .switchIfEmpty(
                          Flux.error(new UserNotFoundException("Users not found with gender: "+gender))
                 )
+                .map(UserMapper::EntityToDomain);
+    }
+
+    @Override
+    public Flux<User> findUsersCriteria(String gender, String role, Boolean active, int page, int size) {
+
+        Criteria criteria = Criteria.empty();
+
+        if (gender != null) {
+            criteria = criteria.and("gender").is(gender);
+        }
+
+        if (role != null) {
+            criteria = criteria.and("role").is(role);
+        }
+
+        if (active != null) {
+            criteria = criteria.and("active").is(active);
+        }
+
+        Query query = Query.query(criteria).with(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "email")));
+
+        return template.select(UserEntity.class)
+                .matching(query)
+                .all()
+                .switchIfEmpty(Flux.error(new UserNotFoundException("Users not found with given filters")))
                 .map(UserMapper::EntityToDomain);
     }
 

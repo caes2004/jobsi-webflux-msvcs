@@ -23,5 +23,6 @@ public interface UserRepositoryPort extends ReactiveCrudPort<User, UUID> {
     Flux<User> findAllByRole(String role, int page, int size);
     Flux<User> findAllByIsActive(boolean isActive, int page, int size);
     Flux<User> findAllByGender(String gender, int page, int size);
+    Flux<User>findUsersCriteria(String gender, String role,Boolean active, int page, int size);
     Mono<Integer> countUsers();
 }

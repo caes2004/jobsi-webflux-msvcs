@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.escaes.ms_users_jobsi.application.dto.UpdateUserCommand;
 import com.escaes.ms_users_jobsi.application.dto.UserDto;
 import com.escaes.ms_users_jobsi.application.mapper.UserMapper;
+import com.escaes.ms_users_jobsi.domain.exception.UserNotFoundException;
 import com.escaes.ms_users_jobsi.domain.port.in.DeleteUserUseCase;
 import com.escaes.ms_users_jobsi.domain.port.in.GetUserUseCase;
 import com.escaes.ms_users_jobsi.domain.port.in.ListUsersUseCase;
@@ -40,7 +41,11 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
     @Override
     public Mono<UserDto> update(UUID id, UpdateUserCommand command) {
 
-        throw new UnsupportedOperationException("Not supported yet.");
+        return userRepository.findById(id)
+                .switchIfEmpty(Mono.error(new UserNotFoundException("User not found with Id: "+id)))
+                .map(user -> UserMapper.updateFromCommand(user, command))
+                .flatMap(userRepository::update)
+                .map(UserMapper::toDto);
     }
 
     @Override
@@ -66,6 +71,12 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
     public Flux<UserDto> listByGender(String gender, int size, int page) {
         int safeSize= Math.min(size,50);
         return userRepository.findAllByGender(gender,page, safeSize).map(UserMapper::toDto);
+    }
+
+    @Override
+    public Flux<UserDto> findUsersCriteria(String gender, String role, Boolean active, int page, int size) {
+        int safeSize=Math.min(size,MAX_PAGE_SIZE);
+        return userRepository.findUsers(gender, role, active, page, safeSize).map(UserMapper::toDto);
     }
 
     @Override

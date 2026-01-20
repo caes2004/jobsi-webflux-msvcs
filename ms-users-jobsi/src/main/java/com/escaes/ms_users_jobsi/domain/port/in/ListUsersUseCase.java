@@ -15,6 +15,8 @@ public interface ListUsersUseCase {
 
     Flux<UserDto> listByGender(String gender, int page, int size);
 
+    Flux<UserDto>findUsersCriteria(String gender, String role,Boolean active, int page, int size);
+
     Mono<Integer> countUsers();
 
 }
