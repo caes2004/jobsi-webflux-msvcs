@@ -76,7 +76,7 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
     @Override
     public Flux<UserDto> findUsersCriteria(String gender, String role, Boolean active, int page, int size) {
         int safeSize=Math.min(size,MAX_PAGE_SIZE);
-        return userRepository.findUsers(gender, role, active, page, safeSize).map(UserMapper::toDto);
+        return userRepository.findUsersCriteria(gender, role, active, page, safeSize).map(UserMapper::toDto);
     }
 
     @Override
