@@ -13,6 +13,6 @@ public interface ReactiveCrudPort<T, ID> {
 
     Mono<Void> deleteById(ID id);
 
-    Flux<T> findAll();
+    Flux<T> findAll(int page, int size);
 
 }

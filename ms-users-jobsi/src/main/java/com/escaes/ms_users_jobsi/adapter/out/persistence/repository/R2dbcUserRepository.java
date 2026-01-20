@@ -1,6 +1,5 @@
 package com.escaes.ms_users_jobsi.adapter.out.persistence.repository;
 
-import java.util.UUID;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 

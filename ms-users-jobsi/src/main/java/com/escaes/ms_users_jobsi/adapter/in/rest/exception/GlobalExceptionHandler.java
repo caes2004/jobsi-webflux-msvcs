@@ -2,6 +2,7 @@ package com.escaes.ms_users_jobsi.adapter.in.rest.exception;
 
 import com.escaes.ms_users_jobsi.domain.exception.InvalidCredentialsException;
 import com.escaes.ms_users_jobsi.domain.exception.UserAlreadyExistsException;
+import com.escaes.ms_users_jobsi.domain.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -61,6 +62,15 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("message", ex.getMessage());
         body.put("status", HttpStatus.BAD_REQUEST.value());
+        return body;
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, Object> handleUserNotFoundException(UserNotFoundException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        body.put("status", HttpStatus.NOT_FOUND.value());
         return body;
     }
 }

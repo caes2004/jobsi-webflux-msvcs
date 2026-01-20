@@ -7,13 +7,13 @@ import reactor.core.publisher.Mono;
 
 public interface ListUsersUseCase {
 
-    Flux<UserDto> listAll();
+    Flux<UserDto> listAll(int page, int size);
 
-    Flux<UserDto> listByRole(String role);
+    Flux<UserDto> listByRole(String role,  int page, int size);
 
-    Flux<UserDto> listByIsActive(boolean isActive);
+    Flux<UserDto> listByIsActive(boolean isActive, int page, int size);
 
-    Flux<UserDto> listByGender(String gender);
+    Flux<UserDto> listByGender(String gender, int page, int size);
 
     Mono<Integer> countUsers();
 

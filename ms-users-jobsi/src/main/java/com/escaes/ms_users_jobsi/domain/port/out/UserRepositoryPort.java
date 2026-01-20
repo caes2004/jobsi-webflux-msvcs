@@ -20,8 +20,8 @@ public interface UserRepositoryPort extends ReactiveCrudPort<User, UUID> {
     Mono<Void> deleteByDocumentNumber(String documentNumber);
     Mono<Void> deleteByEmail(String email);
 
-    Flux<User> findAllByRole(String role);
-    Flux<User> findAllByIsActive(boolean isActive);
-    Flux<User> findAllByGender(String gender);
+    Flux<User> findAllByRole(String role, int page, int size);
+    Flux<User> findAllByIsActive(boolean isActive, int page, int size);
+    Flux<User> findAllByGender(String gender, int page, int size);
     Mono<Integer> countUsers();
 }

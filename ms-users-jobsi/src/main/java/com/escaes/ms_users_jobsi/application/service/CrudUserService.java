@@ -20,58 +20,57 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
 
     private final UserRepositoryPort userRepository;
 
+    private static final int MAX_PAGE_SIZE = 50;
+
     @Override
     public Mono<Void> deleteById(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+       return userRepository.deleteById(id);
     }
 
     @Override
     public Mono<Void> deleteByEmail(String email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteByEmail'");
+        return userRepository.deleteByEmail(email);
     }
 
     @Override
     public Mono<Void> deleteByDocumentNumber(String documentNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteByDocumentNumber'");
+        return  userRepository.deleteByDocumentNumber(documentNumber);
     }
 
     @Override
     public Mono<UserDto> update(UUID id, UpdateUserCommand command) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public Flux<UserDto> listAll() {
-        return userRepository.findAll()
+    public Flux<UserDto> listAll(int page, int size) {
+        int safeSize=Math.min(size,MAX_PAGE_SIZE);
+        return userRepository.findAll(page,safeSize)
                 .map(UserMapper::toDto);
     }
 
     @Override
-    public Flux<UserDto> listByRole(String role) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listByRole'");
+    public Flux<UserDto> listByRole(String role, int size, int page) {
+        int safeSize=Math.min(size,MAX_PAGE_SIZE);
+        return userRepository.findAllByRole(role, page, safeSize).map(UserMapper::toDto);
     }
 
     @Override
-    public Flux<UserDto> listByIsActive(boolean isActive) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listByIsActive'");
+    public Flux<UserDto> listByIsActive(boolean isActive, int page, int size) {
+        int safeSize=Math.min(size,MAX_PAGE_SIZE);
+        return userRepository.findAllByIsActive(isActive, page, safeSize).map(UserMapper::toDto);
     }
 
     @Override
-    public Flux<UserDto> listByGender(String gender) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listByGender'");
+    public Flux<UserDto> listByGender(String gender, int size, int page) {
+        int safeSize= Math.min(size,50);
+        return userRepository.findAllByGender(gender,page, safeSize).map(UserMapper::toDto);
     }
 
     @Override
     public Mono<UserDto> getById(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
+      return userRepository.findById(id).map(UserMapper::toDto);
     }
 
     @Override
@@ -82,8 +81,7 @@ public class CrudUserService implements GetUserUseCase,ListUsersUseCase,UpdateUs
 
     @Override
     public Mono<UserDto> getByDocumentNumber(String documentNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getByDocumentNumber'");
+        return userRepository.findByDocumentNumber(documentNumber).map(UserMapper::toDto);
     }
 
     @Override
