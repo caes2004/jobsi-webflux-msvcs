@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+
+import java.util.UUID;
 import java.util.function.Function;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -44,12 +46,21 @@ public class JWTutil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username, String role) {
+    public String generateToken(UUID userId, String email, String role) {
         Map<String, Object> claims = new HashMap<>();
-        if (role != null) {
-            claims.put("role", role);
-        }
-        return createToken(claims, username);
+        claims.put("email", email);
+        claims.put("role", role);
+
+        return createToken(claims, userId.toString());
+    }
+
+
+    public UUID extractUserId(String token) {
+        return UUID.fromString(extractClaim(token, Claims::getSubject));
+    }
+
+    public String extractEmail(String token) {
+        return extractClaim(token, claims -> claims.get("email", String.class));
     }
 
     public String extractRole(String token) {
@@ -62,9 +73,8 @@ public class JWTutil {
                 .signWith(key).compact();
     }
 
-    public Boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    public Boolean validateToken(String token) {
+        return !isTokenExpired(token);
     }
 
 }

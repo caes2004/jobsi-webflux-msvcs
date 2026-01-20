@@ -133,7 +133,7 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
 
        Flux<UserEntity>users= template
                .select(UserEntity.class)
-               .matching(Query.query(Criteria.where("role").is(role)))
+               .matching(query)
                .all()
                .switchIfEmpty(
                        Flux.error(new UserNotFoundException("Users not found with role: " + role))

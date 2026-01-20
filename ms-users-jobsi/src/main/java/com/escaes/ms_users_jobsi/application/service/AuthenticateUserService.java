@@ -12,6 +12,8 @@ import com.escaes.ms_users_jobsi.domain.port.out.UserRepositoryPort;
 import lombok.AllArgsConstructor;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 public class AuthenticateUserService implements AuthenticateUserUseCase{
 
@@ -24,12 +26,13 @@ public class AuthenticateUserService implements AuthenticateUserUseCase{
         return userRepository.findByEmail(command.getEmail())
             .flatMap(user -> {
                 if (passwordEncoder.matches(command.getPassword(), user.getPassword())) {
+                    UUID uuid= user.getId();
                     String role = user.getRole() != null ? user.getRole().name() : "USER";
-                    String token = jwtutil.generateToken(user.getEmail(), role);
+                    String token = jwtutil.generateToken(uuid,user.getEmail(), role);
                     return Mono.just(AuthResponse.builder().token(token).build());
                 }
                 return Mono.error(new InvalidCredentialsException("Invalid credentials"));
             })
-            .switchIfEmpty(Mono.error(new InvalidCredentialsException("Invalid credentials")));
+            .switchIfEmpty(Mono.error(new InvalidCredentialsException("Invalid credentials not known")));
     }
 }

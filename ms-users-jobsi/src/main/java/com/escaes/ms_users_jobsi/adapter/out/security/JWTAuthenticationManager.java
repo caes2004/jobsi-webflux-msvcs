@@ -7,6 +7,7 @@ import org.springframework.security.web.server.authentication.ServerAuthenticati
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,31 +25,26 @@ public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
 
     private final JWTutil jwtUtil;
 
-    private final CrudUserService userService;
-
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
-       String token = authentication.getCredentials().toString();
-       String username= jwtUtil.extractUsername(token);
+        String token = authentication.getCredentials().toString();
 
-       return userService.getByEmail(username)
-               .handle((userDetails, sink) -> {
-                   if (jwtUtil.validateToken(token, userDetails.getEmail())) {
-                       // Extract role from token and build authorities
-                       String role = jwtUtil.extractRole(token);
-                       List<GrantedAuthority> authorities = Collections.emptyList();
-                       if (role != null) {
-                           authorities = Collections.singletonList(
-                                   new SimpleGrantedAuthority("ROLE_" + role)
-                           );
-                       }
-                       sink.next(new UsernamePasswordAuthenticationToken(
-                               userDetails.getEmail(), token, authorities));
-                   } else {
-                       sink.error(new AuthenticationException("Invalid Token") {
-                       });
-                   }
-               });
+        if (!jwtUtil.validateToken(token)) {
+            return Mono.error(new AuthenticationException("Invalid token") {});
+        }
+
+        UUID id = jwtUtil.extractUserId(token);
+        String email = jwtUtil.extractUsername(token);
+        String role = jwtUtil.extractRole(token);
+
+        List<GrantedAuthority> authorities =
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
+
+        AuthUser principal = new AuthUser(id,email, role);
+
+        return Mono.just(
+                new UsernamePasswordAuthenticationToken(principal, token, authorities)
+        );
     }
     
     public ServerAuthenticationConverter authenticationConverter() {

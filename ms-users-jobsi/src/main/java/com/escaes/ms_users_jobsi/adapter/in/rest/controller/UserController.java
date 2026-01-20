@@ -1,5 +1,6 @@
 package com.escaes.ms_users_jobsi.adapter.in.rest.controller;
 
+import com.escaes.ms_users_jobsi.adapter.out.security.JWTutil;
 import com.escaes.ms_users_jobsi.application.dto.UpdateUserCommand;
 import com.escaes.ms_users_jobsi.application.dto.UserDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +14,8 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/users")
 @Tag(name = "Users", description = "Related operations with users")
 public class UserController {
+
+    private final JWTutil  jwtutil;
 
     @GetMapping("/me")
     public Mono<UserDto> getMyProfile() {
