@@ -5,6 +5,8 @@ import com.escaes.ms_users_jobsi.application.dto.LoginCommand;
 import com.escaes.ms_users_jobsi.application.dto.RegisterUserCommand;
 import com.escaes.ms_users_jobsi.application.service.AuthenticateUserService;
 import com.escaes.ms_users_jobsi.application.service.RegisterUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
-
+@SecurityRequirement(name = "")//No security
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -28,6 +30,10 @@ public class AuthController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
+    @Operation(
+            summary = "User login",
+            description = "Authenticates a user and returns a JWT token"
+    )
     @PostMapping("/login")
     public Mono<AuthResponse> authenticate(@Valid @RequestBody LoginCommand command) {
         LOGGER.info("Received login command with email= {}", command.getEmail());
@@ -35,6 +41,10 @@ public class AuthController {
         return authenticateUserService.authenticate(command).log("AUTH_FLOW");
     }
 
+    @Operation(
+            summary = "User registration",
+            description = "Registers a new user"
+    )
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<UUID> registerUser(@Valid @RequestBody RegisterUserCommand command) {

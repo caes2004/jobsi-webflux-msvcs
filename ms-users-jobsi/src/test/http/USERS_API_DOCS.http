@@ -1,0 +1,74 @@
+### ============================================
+### Users API - /users Controller
+### HTTP Client Test Documentation
+### ============================================
+
+### Variables (adjust as needed)
+@baseUrl = http://localhost:8080
+@userId = 00000000-0000-0000-0000-000000000000
+
+### NOTES:
+### - The project includes initial seed data (DataInitializer) with sample users:
+###   john.doe@example.com (password: A1234567)
+###   jane.smith@example.com (password: B1234567)
+### - Available endpoints in UserController:
+###   GET    /users/me
+###   PUT    /users/me
+###   GET    /users/{id}
+###   GET    /users
+###   DELETE /users/{id}
+###   DELETE /users/me
+
+### ============================================
+### 1. GET MY PROFILE (GET) - Authentication required
+### ============================================
+GET {{baseUrl}}/users/me
+Content-Type: application/json
+# Add Authorization: Bearer <token> header if your auth flow requires it
+
+
+### ============================================
+### 2. UPDATE MY PROFILE (PUT) - Replaces allowed fields only
+### ============================================
+PUT {{baseUrl}}/users/me
+Content-Type: application/json
+# Request body must follow UpdateUserCommand structure (only allowed fields)
+
+{
+  "name": "Juan Updated",
+  "firstName": "Pérez",
+  "lastName": "Gómez",
+  "phoneNumber": "3000000000",
+  "birthDate": "1998-05-10",
+  "isActive": true,
+  "role": "USER",
+  "gender": "MALE"
+}
+
+### ============================================
+### 3. GET USER BY ID (GET)
+### ============================================
+GET {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+
+### ============================================
+### 4. LIST USERS (GET) - Optional filters
+### ============================================
+GET {{baseUrl}}/users?gender=MALE&role=USER&active=true&page=0&size=20
+Content-Type: application/json
+
+
+### ============================================
+### 5. DELETE USER BY ID (DELETE)
+### ============================================
+DELETE {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+
+### ============================================
+### 6. DELETE MY ACCOUNT (DELETE) - Authentication required
+### ============================================
+DELETE {{baseUrl}}/users/me
+Content-Type: application/json
+# Add Authorization: Bearer <token> header if applicable

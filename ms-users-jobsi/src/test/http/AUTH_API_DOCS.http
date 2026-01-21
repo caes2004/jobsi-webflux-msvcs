@@ -1,0 +1,78 @@
+### ============================================
+### Authentication API - /auth Controller
+### HTTP Requests to test login and registration
+### ============================================
+
+### Variables (adjust as needed)
+@baseUrl = http://localhost:8080
+
+### NOTES:
+### - The project includes sample users initialized by DataInitializer:
+###   - john.doe@example.com (password: A1234567)
+###   - jane.smith@example.com (password: B1234567)
+### - Available endpoints in AuthController:
+###   POST /auth/login
+###   POST /auth/register
+
+### ============================================
+### 1. LOGIN (POST) - Authenticate user
+### ============================================
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "A1234567"
+}
+
+### Expected response: AuthResponse (token, expiresAt, userId) depending on implementation
+
+
+### ============================================
+### 2. REGISTER USER (POST)
+### ============================================
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "documentNumber": "3333333",
+  "name": "Carlos",
+  "firstName": "González",
+  "lastName": "Lopez",
+  "email": "carlos.gonzalez@example.com",
+  "password": "C1234567",
+  "phoneNumber": "3007654321",
+  "birthDate": "1995-04-20"
+}
+
+### Expected response: UUID of the created user (201 Created)
+
+
+### ============================================
+### 3. FULL FLOW TEST: Register then login
+### ============================================
+
+# 1) Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "documentNumber": "4444444",
+  "name": "Test",
+  "firstName": "User",
+  "lastName": "Example",
+  "email": "test.user@example.com",
+  "password": "T1234567",
+  "phoneNumber": "3000000001",
+  "birthDate": "1990-01-01"
+}
+
+###
+# 2) Login with the newly created user
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test.user@example.com",
+  "password": "T1234567"
+}
