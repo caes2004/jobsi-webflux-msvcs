@@ -68,7 +68,7 @@ public class UserController {
             description = "Retrieves a user by their unique identifier"
     )
     @GetMapping("/{id}")
-    public Mono<UserDto> getUserById(@PathVariable String id) {
+    public Mono<UserDto> getUserById(@PathVariable("id") String id) {
         return crudUserService.getById(UUID.fromString(id));
     }
 

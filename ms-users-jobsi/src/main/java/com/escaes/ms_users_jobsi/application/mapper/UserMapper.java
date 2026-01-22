@@ -1,9 +1,8 @@
 package com.escaes.ms_users_jobsi.application.mapper;
 
-import java.time.Instant;
+
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+
 import java.util.UUID;
 
 import com.escaes.ms_users_jobsi.adapter.out.persistence.entity.UserEntity;
@@ -51,23 +50,24 @@ public final class UserMapper {
     private UserMapper() {
     }
 
-    public static User toDomain(RegisterUserCommand cmd) {
+    public static User toDomain(RegisterUserCommand cmd, String encodedPassword) {
         UUID id = UUID.randomUUID();
 
-        return new User(
-                id,
-                cmd.getDocumentNumber(),
-                cmd.getName(),
-                cmd.getFirstName(),
-                cmd.getLastName(),
-                cmd.getEmail(),
-                cmd.getPassword(),
-                cmd.getPhoneNumber(),
-                cmd.getBirthDate(),
-                true,
-                Role.USER,
-                cmd.getGender()
-        );
+        return User.builder()
+                .id(id)
+                .documentNumber(cmd.getDocumentNumber())
+                .name(cmd.getName())
+                .firstName(cmd.getFirstName())
+                .lastName(cmd.getLastName())
+                .email(cmd.getEmail())
+                .password(encodedPassword)
+                .phoneNumber(cmd.getPhoneNumber())
+                .birthDate(cmd.getBirthDate())
+                .isActive(true)
+                .role(cmd.getRole() != null ? cmd.getRole() : Role.USER)
+                .gender(cmd.getGender() != null ? cmd.getGender() : Gender.OTHER)
+                .build();
+
     }
 
     public static User EntityToDomain(UserEntity entity) {
@@ -84,7 +84,8 @@ public final class UserMapper {
                 .phoneNumber(entity.getPhoneNumber())
                 .birthDate(entity.getBirthDate())
                 .isActive(entity.isActive())
-                .role(entity.getRole() != null ? Role.valueOf(entity.getRole()) : null)
+                .role(entity.getRole() != null ? Role.valueOf(entity.getRole()) : Role.USER)
+                .gender(entity.getGender() != null ? Gender.valueOf(entity.getGender()) : Gender.OTHER)
                 .build();
 
     }
@@ -129,15 +130,12 @@ public final class UserMapper {
                 .phoneNumber(phone)
                 .birthDate(birth)
                 .isActive(active)
-                .role(role).build();
+                .role(role)
+                .gender(gender)
+                .build();
 
     }
 
-    private static Date toDate(LocalDate ld) {
-        if (ld == null) return null;
-        Instant instant = ld.atStartOfDay(ZoneId.systemDefault()).toInstant();
-        return Date.from(instant);
-    }
 
     public static UserEntity toEntity(User user) {
         if (user == null) return null;

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.escaes.ms_users_jobsi.domain.model.Gender;
 
+import com.escaes.ms_users_jobsi.domain.model.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -84,4 +85,11 @@ public class RegisterUserCommand {
             allowableValues = {"MALE", "FEMALE", "OTHER"}
     )
     Gender gender;
+
+    @Schema(
+            description = "User role",
+            example = "USER",
+            allowableValues = {"USER","ADMIN"}
+    )
+    Role role;
 }

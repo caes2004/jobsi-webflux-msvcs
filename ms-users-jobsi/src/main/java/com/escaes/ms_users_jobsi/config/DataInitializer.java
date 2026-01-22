@@ -3,6 +3,7 @@ package com.escaes.ms_users_jobsi.config;
 import java.time.LocalDate;
 import java.util.logging.Logger;
 
+import com.escaes.ms_users_jobsi.domain.model.Role;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +43,7 @@ public class DataInitializer {
                                             .birthDate(LocalDate.of(2004,2,7))
                                             .password("A1234567")
                                             .phoneNumber("+1234567890")
+                                            .role(Role.ADMIN)
                                             .build()
                             ),
                             registerUserService.registerUser(

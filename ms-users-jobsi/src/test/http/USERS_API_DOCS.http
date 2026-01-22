@@ -5,7 +5,8 @@
 
 ### Variables (adjust as needed)
 @baseUrl = http://localhost:8080
-@userId = 00000000-0000-0000-0000-000000000000
+@userId =
+@authToken =
 
 ### NOTES:
 ### - The project includes initial seed data (DataInitializer) with sample users:
@@ -24,7 +25,7 @@
 ### ============================================
 GET {{baseUrl}}/users/me
 Content-Type: application/json
-# Add Authorization: Bearer <token> header if your auth flow requires it
+Authorization: Bearer {{authToken}}
 
 
 ### ============================================
@@ -32,6 +33,7 @@ Content-Type: application/json
 ### ============================================
 PUT {{baseUrl}}/users/me
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 # Request body must follow UpdateUserCommand structure (only allowed fields)
 
 {
@@ -50,13 +52,14 @@ Content-Type: application/json
 ### ============================================
 GET {{baseUrl}}/users/{{userId}}
 Content-Type: application/json
-
+Authorization: Bearer {{authToken}}
 
 ### ============================================
 ### 4. LIST USERS (GET) - Optional filters
 ### ============================================
 GET {{baseUrl}}/users?gender=MALE&role=USER&active=true&page=0&size=20
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 
 ### ============================================
@@ -64,6 +67,7 @@ Content-Type: application/json
 ### ============================================
 DELETE {{baseUrl}}/users/{{userId}}
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 
 ### ============================================
@@ -71,4 +75,5 @@ Content-Type: application/json
 ### ============================================
 DELETE {{baseUrl}}/users/me
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 # Add Authorization: Bearer <token> header if applicable

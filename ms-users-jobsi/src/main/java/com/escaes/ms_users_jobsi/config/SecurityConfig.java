@@ -32,12 +32,11 @@ public class SecurityConfig {
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/auth/**", "/actuator/**", "/health","/v3/api-docs/**","/swagger-ui/**").permitAll()
 
+                        // USER and ADMIN
+                        .pathMatchers("/users/me/**").hasAnyRole("USER", "ADMIN")
                         // Only ADMIN
                         .pathMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
-
-                        // USER and ADMIN
-                        .pathMatchers("/users/me/**").hasAnyRole("USER", "ADMIN")
 
                         .anyExchange().authenticated())
                 .addFilterAt(authFilter, SecurityWebFiltersOrder.AUTHENTICATION)
