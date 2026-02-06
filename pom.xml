@@ -17,6 +17,7 @@
     <modules>
         <module>ms-eureka-jobsi</module>
         <module>ms-users-jobsi</module>
+        <module>ms-jobs-jobsi</module>
     </modules>
 
     <!-- Versiones centralizadas -->
